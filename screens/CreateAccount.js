@@ -1,3 +1,4 @@
+import { gql, useMutation } from "@apollo/client";
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components/native";
@@ -5,8 +6,47 @@ import AuthButton from "../components/auth/AuthButton";
 import AuthLayout from "../components/auth/AuthLayout";
 import { TextInput } from "../components/auth/AuthShared";
 
-export default function CreateAccount() {
-  const { register, handleSubmit, setValue } = useForm();
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $firstName: String!
+    $lastName: String
+    $userName: String!
+    $email: String!
+    $password: String!
+  ) {
+    createAccount(
+      firstName: $firstName
+      lastName: $lastName
+      userName: $userName
+      email: $email
+      password: $password
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
+export default function CreateAccount({ navigation }) {
+  const { register, handleSubmit, setValue, getValues } = useForm();
+  const onCompleted = data => {
+    const {
+      createAccount: { ok },
+    } = data;
+    const { userName, password } = getValues();
+    if (ok) {
+      navigation.navigate("LogIn", {
+        userName,
+        password,
+      });
+    }
+  };
+  const [createAccountMutation, { loading }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
   const lastNameRef = useRef();
   const usernameRef = useRef();
   const emailRef = useRef();
@@ -16,13 +56,19 @@ export default function CreateAccount() {
   };
 
   const onValid = data => {
-    console.log(data);
+    if (!loading) {
+      createAccountMutation({
+        variables: {
+          ...data,
+        },
+      });
+    }
   };
 
   useEffect(() => {
     register("firstName", { required: true });
     register("lastName", { required: true });
-    register("username", { required: true });
+    register("userName", { required: true });
     register("email", { required: true });
     register("password", { required: true });
   }, [register]);
@@ -43,12 +89,13 @@ export default function CreateAccount() {
         placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         onChangeText={text => setValue("lastName", text)}
         returnKeyType="next"
+        autoCapitalize={"none"}
         onSubmitEditing={() => onNext(usernameRef)}
       />
       <TextInput
         placeholder="Username"
         placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
-        onChangeText={text => setValue("username", text)}
+        onChangeText={text => setValue("userName", text)}
         returnKeyType="next"
         onSubmitEditing={() => onNext(emailRef)}
         autoCapitalize={"none"}
@@ -73,8 +120,8 @@ export default function CreateAccount() {
         autoCapitalize={"none"}
       />
       <AuthButton
+        loading={loading}
         text="Create Account"
-        loading
         onPress={handleSubmit(onValid)}
       />
     </AuthLayout>

@@ -1,7 +1,9 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
+
+export const isLoggedInVar = makeVar(false);
 
 const client = new ApolloClient({
-  uri: "https://tiny-shrimp-4.loca.lt/graphql",
+  uri: "https://pretty-falcon-34.loca.lt/graphql",
   cache: new InMemoryCache(),
 });
 
