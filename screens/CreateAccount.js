@@ -1,43 +1,57 @@
-import React from "react";
-import { TextInput } from "react-native";
+import React, { useRef } from "react";
 import styled from "styled-components/native";
 import AuthButton from "../components/auth/AuthButton";
 import AuthLayout from "../components/auth/AuthLayout";
+import { TextInput } from "../components/auth/AuthShared";
 
 export default function CreateAccount() {
+  const lastNameRef = useRef();
+  const usernameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const onNext = nextOne => {
+    nextOne?.current?.focus();
+  };
+
+  const onDone = () => {
+    alert("done!");
+  };
+
   return (
     <AuthLayout>
       <TextInput
         placeholder="First Name"
-        placeholderTextColor="gray"
+        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "100%" }}
+        onSubmitEditing={() => onNext(lastNameRef)}
       />
       <TextInput
+        ref={lastNameRef}
         placeholder="Last Name"
-        placeholderTextColor="gray"
+        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "100%" }}
+        onSubmitEditing={() => onNext(usernameRef)}
       />
       <TextInput
         placeholder="Username"
-        placeholderTextColor="gray"
+        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "100%" }}
+        onSubmitEditing={() => onNext(emailRef)}
       />
       <TextInput
         placeholder="Email"
-        placeholderTextColor="gray"
+        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         keyboardType="email-address"
         returnKeyType="next"
-        style={{ backgroundColor: "white", width: "100%" }}
+        onSubmitEditing={() => onNext(passwordRef)}
       />
       <TextInput
         placeholder="Password"
-        placeholderTextColor="gray"
+        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
         secureTextEntry
         returnKeyType="done"
-        style={{ backgroundColor: "white", width: "100%" }}
+        lastOne={true}
+        nSubmitEditing={onDone}
       />
       <AuthButton text="Create Account" disabled={true} onPress={() => null} />
     </AuthLayout>
