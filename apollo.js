@@ -14,7 +14,7 @@ export const logUserIn = async token => {
 };
 
 const client = new ApolloClient({
-  uri: "https://pretty-falcon-34.loca.lt/graphql",
+  uri: "https://fresh-mule-89.loca.lt/graphql",
   cache: new InMemoryCache(),
 });
 
