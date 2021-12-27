@@ -39,7 +39,7 @@ export default function LoggedInNav() {
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon iconName={"search"} color={color} focused={focused} />
           ),
-        }}
+        }} 
       >
         {() => <StackNavFactory screenName="Search" />}
       </Tabs.Screen>
