@@ -6,8 +6,8 @@ import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 import Photo from "../components/Photo";
 
 const FEED_QUERY = gql`
-  query seeFeed {
-    seeFeed {
+  query seeFeed($offset: Int!) {
+    seeFeed(offset: $offset) {
       ...PhotoFragment
       user {
         userName
@@ -22,7 +22,11 @@ const FEED_QUERY = gql`
 `;
 
 export default function Feed({ navigation }) {
-  const { data, loading, refetch } = useQuery(FEED_QUERY);
+  const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY, {
+    variables: {
+      offset,
+    },
+  });
   const renderPhoto = ({ item: photo }) => {
     return <Photo {...photo} />;
   };
@@ -35,6 +39,14 @@ export default function Feed({ navigation }) {
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        onEndReachedThreshold={0.05}
+        onEndReached={() =>
+          fetchMore({
+            variables: {
+              offset: data?.seeFeed?.length,
+            },
+          })
+        }
         refreshing={refreshing}
         onRefresh={refresh}
         style={{ width: "100%" }}
