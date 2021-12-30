@@ -1,9 +1,10 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import React, { useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import ScreenLayout from "../components/ScreenLayout";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 import Photo from "../components/Photo";
+import { tokenVar } from "../apollo";
 
 const FEED_QUERY = gql`
   query seeFeed($offset: Int!) {
@@ -24,7 +25,7 @@ const FEED_QUERY = gql`
 export default function Feed({ navigation }) {
   const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
-      offset,
+      offset: 0,
     },
   });
   const renderPhoto = ({ item: photo }) => {
