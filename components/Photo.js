@@ -145,5 +145,6 @@ Photo.propTypes = {
   caption: PropTypes.string,
   file: PropTypes.string.isRequired,
   likes: PropTypes.number.isRequired,
+  commentNumber: PropTypes.number,
 };
 export default Photo;

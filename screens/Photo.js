@@ -1,7 +1,23 @@
+import { gql } from "@apollo/client";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export default function Photo({ navigation }) {
+const SEE_PHOTO = gql`
+  query seePhoto($id: Int!) {
+    seePhoto(id: $id) {
+      ...PhotoFragment
+      user {
+        id
+        username
+        avatar
+      }
+      caption
+    }
+  }
+  ${PHOTO_FRAGMENT}
+`;
+
+export default function Photo({ route }) {
   return (
     <View
       style={{
