@@ -95,6 +95,7 @@ function Photo({ id, user, caption, file, isLiked, likes }) {
     },
     update: updateToggleLike,
   });
+
   return (
     <Container>
       <Header onPress={() => navigation.navigate("Profile")}>
