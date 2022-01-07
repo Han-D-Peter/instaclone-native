@@ -12,16 +12,17 @@ export default function UploadNav() {
   return (
     <Tab.Navigator
       tabBarPosition="bottom"
-      tabBarOptions={{
-        style: { backgroundColor: "black" },
-        activeTintColor: "white",
-        indicatorStyle: {
+      screenOptions={{
+        tabBarActiveTintColor: "white",
+        tabBarIndicatorStyle: {
           backgroundColor: "white",
           top: 0,
         },
+        tabBarStyle: {
+          backgroundColor: "black",
+        },
       }}
     >
-      <Tab.Screen name="Take" component={TakePhoto} />
       <Tab.Screen name="Select">
         {() => (
           <Stack.Navigator
@@ -45,6 +46,7 @@ export default function UploadNav() {
           </Stack.Navigator>
         )}
       </Tab.Screen>
+      <Tab.Screen name="Take" component={TakePhoto} />
     </Tab.Navigator>
   );
 }
